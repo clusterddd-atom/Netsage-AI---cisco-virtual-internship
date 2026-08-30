@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NetSage AI - Flask Dashboard</title>
+    <style>
+        body { font-family: sans-serif; background: #0E1117; color: #ECF1F4; margin: 0; padding: 20px; }
+        .container { display: flex; gap: 20px; }
+        .left { flex: 1.1; background: #1D2330; padding: 20px; border-radius: 12px; border: 1px solid #2D3748; }
+        .right { flex: 0.9; background: #1A202C; padding: 20px; border-radius: 12px; border: 1px solid #2D3748; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .card { background: #111622; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #2D3748; }
+        .user-msg { background: #2D3748; padding: 12px; border-radius: 8px; margin-top: 15px; }
+        .ai-msg { background: #111622; padding: 12px; border-radius: 8px; border-left: 4px solid #04844b; margin-top: 10px; }
+        input, textarea, select { width: 100%; padding: 8px; margin: 5px 0 15px 0; background: #1A202C; color: white; border: 1px solid #2D3748; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #0070d2; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn-panel { display: flex; gap: 5px; margin-top: 10px; }
+        .btn-acc { background: #04844b; } .btn-edit { background: #b75c00; } .btn-rej { background: #c23934; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; border-bottom: 1px solid #2D3748; text-align: left; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <h1>🤖 NetSage AI Network Assistant (Flask Engine)</h1>
+    <hr style="border-color: #2D3748;">
+    <div class="container">
+        <div class="left">
+            <h3>💬 NetSage AI Copilot Terminal</h3>
+            <form method="GET" action="/">
+                <label>Quick Load a Test Case:</label>
+                <select name="case_id" onchange="this.form.submit()">
+                    <option value="">-- Choose a Case --</option>
+                    {% for c in cases %}
+                    <option value="{{ c.id }}" {% if selected_case and selected_case.id == c.id %}selected{% endif %}>Case #{{ c.id }}: {{ c.symptom[:40] }}...</option>
+                    {% endfor %}
+                </select>
+            </form>
+            <form method="POST" action="/">
+                <label>Network Symptom:</label>
+                <input type="text" name="symptom" value="{% if selected_case %}{{ selected_case.symptom }}{% endif %}" required>
+                <label>Raw Command Output:</label>
+                <textarea name="log" rows="4" required>{% if selected_case %}{{ selected_case.show_output }}{% endif %}</textarea>
+                <input type="hidden" name="layer" value="{% if selected_case %}{{ selected_case.osi_layer }}{% else %}Layer 3{% endif %}">
+                <input type="hidden" name="severity" value="{% if selected_case %}{{ selected_case.severity }}{% else %}High{% endif %}">
+                <button type="submit">🚀 Analyze Logs</button>
+            </form>
+            {% if diagnosis %}
+            <div class="user-msg"><b>User Engineer:</b> Troubleshoot: {{ diagnosis.symptom }}</div>
+            <div class="ai-msg">
+                <b>🤖 Diagnostic Report</b> (via {{ diagnosis.engine }})<br><br>
+                ⚠️ <b>ROOT CAUSE:</b> {{ diagnosis.root_cause }}<br>
+                🔍 <b>EVIDENCE:</b> <code>{{ diagnosis.evidence }}</code><br>
+                🛠️ <b>NEXT STEP:</b> <code>{{ diagnosis.next_command }}</code><br>
+                💡 <b>FIX:</b> {{ diagnosis.fix_steps }}
+            </div>
+            <div class="btn-panel">
+                <form method="POST" action="/review" style="flex:1;">
+                    <input type="hidden" name="id" value="{{ diagnosis.id }}"><input type="hidden" name="symptom" value="{{ diagnosis.symptom }}"><input type="hidden" name="layer" value="{{ diagnosis.layer }}"><input type="hidden" name="severity" value="{{ diagnosis.severity }}"><input type="hidden" name="status" value="Accepted"><input type="hidden" name="notes" value="Approved automatically by human manager.">
+                    <button type="submit" class="btn-acc">✅ Accept</button>
+                </form>
+                <form method="POST" action="/review" style="flex:1;">
+                    <input type="hidden" name="id" value="{{ diagnosis.id }}"><input type="hidden" name="symptom" value="{{ diagnosis.symptom }}"><input type="hidden" name="layer" value="{{ diagnosis.layer }}"><input type="hidden" name="severity" value="{{ diagnosis.severity }}"><input type="hidden" name="status" value="Edited"><input type="hidden" name="notes" value="Human adjusted layout configuration variables.">
+                    <button type="submit" class="btn-edit">📝 Edit</button>
+                </form>
+                <form method="POST" action="/review" style="flex:1;">
+                    <input type="hidden" name="id" value="{{ diagnosis.id }}"><input type="hidden" name="symptom" value="{{ diagnosis.symptom }}"><input type="hidden" name="layer" value="{{ diagnosis.layer }}"><input type="hidden" name="severity" value="{{ diagnosis.severity }}"><input type="hidden" name="status" value="Rejected"><input type="hidden" name="notes" value="AI recommendation hallucinated; escalated.">
+                    <button type="submit" class="btn-rej">❌ Reject</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+        <div class="right">
+            <h3>📊 Live Platform Telemetry & Logs</h3>
+            <div class="grid">
+                <div class="card"><h4 style="margin:0;color:#706e6b;">Cases Audited</h4><p style="font-size:24px;margin:5px 0;color:#00FFCC;">{{ total }}</p></div>
+                <div class="card"><h4 style="margin:0;color:#706e6b;">Alignment</h4><p style="font-size:24px;margin:5px 0;color:#00FFCC;">{{ alignment }}%</p></div>
+            </div>
+            <div style="display:flex;justify-content:space-around;font-size:14px;margin-bottom:15px;">
+                <span>🟢 Accepted: {{ accepted }}</span><span>🟡 Edited: {{ edited }}</span><span>🔴 Rejected: {{ rejected }}</span>
+            </div>
+            <h4>📋 Governance Audit Ledger</h4>
+            <table>
+                <tr><th>ID</th><th>Symptom</th><th>Status</th><th>Notes</th></tr>
+                {% for log in audit_logs %}
+                <tr><td>#{{ log.id }}</td><td>{{ log.symptom[:20] }}...</td><td>{{ log.status }}</td><td><i>{{ log.notes }}</i></td></tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+</html>

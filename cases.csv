@@ -1,0 +1,31 @@
+id,symptom,show_output,expected_fault,osi_layer,severity
+1,PC cannot reach website but gateway works,interface GigabitEthernet0/0 status shutdown,Gateway Interface Is Down,Layer 3,High
+2,Device has duplicate IP message error,interface Vlan10 ip address 192.168.1.50 status duplicate,IP Address Conflict,Layer 3,Medium
+3,Browser error says website address not found,ip name-server 0.0.0.0,Missing DNS Server Configuration,Layer 7,Low
+4,PC in accounting cannot talk to server in sales,switchport access vlan 10 mismatch trunk,VLAN Membership Mismatch,Layer 2,High
+5,Cannot access internet pages at all,ip route 0.0.0.0 0.0.0.0 missing,Missing Default Static Route,Layer 3,High
+6,PC gets IP 169.254.x.x and cannot access network,ip dhcp pool local empty leases,DHCP Pool Exhaustion,Layer 7,High
+7,Inter-VLAN traffic fails between switches,interface GigabitEthernet0/1 switchport mode access,Trunk Port Misconfigured as Access,Layer 2,High
+8,Ping to external server fails at router edge,access-list 101 deny ip any any,Strict ACL Blocking Traffic,Layer 4,High
+9,Internal hosts cannot browse public web servers,ip nat inside source list missed,NAT Inside/Outside Map Missing,Layer 3,High
+10,Guest Wi-Fi users can access accounting files,vlan 99 isolation disabled,Missing Guest Isolation Profile,Layer 2,Medium
+11,New laptop cannot join secure office Wi-Fi,dot1x authentication failure credentials,RADIUS Authentication Failure,Layer 2,Medium
+12,Switch trunk port drops all tagged user frames,switchport trunk allowed vlan 1,VLAN Pruning Dropping Traffic,Layer 2,Medium
+13,PC can ping gateway but not remote branch server,router ospf 1 missing network statement,Missing OSPF Network Advertisement,Layer 3,High
+14,Router CPU spiking to 100 percent constantly,ip route 0.0.0.0 0.0.0.0 Loopback0,Routing Loop Configuration Error,Layer 3,High
+15,VoIP phones dropping calls across the switch,mls qos trust cos disabled,Missing QoS Trust Boundary,Layer 2,Medium
+16,PC cannot obtain an IP address automatically,ip helper-address missing on interface,Missing DHCP Relay Agent Address,Layer 3,High
+17,Secure terminal session to router rejected,line vty 0 4 transport input none,SSH/Telnet Blocked on VTY Lines,Layer 7,Low
+18,Server cannot be reached outside local subnet,ip default-gateway unconfigured,Missing Gateway on Layer 2 Switch,Layer 3,Medium
+19,Cannot ping server by name but IP works,ip domain-lookup disabled,DNS Name Resolution Disabled,Layer 7,Low
+20,Fiber link trunk interface fluctuating up/down,interface TenGigabitEthernet0/1 duplex half,Duplex Mismatch on Fiber Link,Layer 1,High
+21,Web traffic blocked but ping tool works fine,access-list 102 deny tcp any any eq 443,ACL Blocking Port 443 HTTPS,Layer 4,High
+22,Branch office cannot reach the main data center,crypto isakmp policy failure,VPN Phase 1 Policy Mismatch,Layer 3,High
+23,Devices getting incorrect network IP parameters,rogue dhcp server detected on port,Rogue DHCP Server on Network,Layer 3,High
+24,Switch port goes down immediately when PC plugs in,err-disable port-security violation,Port Security Violation Lockdown,Layer 2,Medium
+25,Network map lacks device details over connections,no lldp run,LLDP Discovery Protocol Disabled,Layer 2,Low
+26,Packet losses observed on heavily loaded trunk,interface range gig1/0/1 speed 10,Speed Mismatch Configuration,Layer 1,Medium
+27,Remote admin cannot pull log files from device,logging host unreachable,Missing Syslog Server Route,Layer 7,Low
+28,Time stamp tracking mismatch across logs,ntp server unconfigured,Network Time Protocol Sync Missing,Layer 7,Low
+29,Layer 3 switch routing engine fails to forward,no ip routing,Global IP Routing Disabled,Layer 3,High
+30,Wi-Fi access point drops clients randomly,dot11 keepalive timeout,Wireless Controller Timeout Misconfig,Layer 2,Medium

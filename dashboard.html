@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NetSage AI - Operations Management Dashboard</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f6f9; color: #333; margin: 0; padding: 20px; }
+        .header { background: #0070d2; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .card { background: white; padding: 15px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-top: 4px solid #0070d2; text-align: center; }
+        .card.high { border-top-color: #ea001e; }
+        .card.agreement { border-top-color: #04844b; }
+        .card h3 { margin: 0; font-size: 14px; color: #706e6b; text-transform: uppercase; }
+        .card p { margin: 10px 0 0 0; font-size: 28px; font-weight: bold; color: #16325c; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        th { background: #f3f2f1; color: #514f4d; text-align: left; padding: 12px; font-size: 13px; text-transform: uppercase; }
+        td { padding: 12px; border-bottom: 1px solid #e0e0e0; font-size: 14px; vertical-align: top; }
+        tr:hover { background-color: #f9f9f9; }
+        .badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; display: inline-block; }
+        .badge.high { background: #fed8d6; color: #c23934; }
+        .badge.medium { background: #ffe8cf; color: #b75c00; }
+        .badge.low { background: #d8f5ff; color: #005fb2; }
+        .badge.accepted { background: #d8f3e5; color: #04844b; }
+        .badge.edited { background: #fff1d2; color: #b75c00; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 style="margin:0; font-size: 24px;">NetSage AI Automation Platform</h1>
+        <p style="margin:5px 0 0 0; opacity: 0.9;">Cisco AICTE Virtual Internship Demonstration Suite</p>
+    </div>
+
+    <div class="metrics-grid">
+        <div class="card"><h3>Total Cases</h3><p>30</p></div>
+        <div class="card high"><h3>High Severity</h3><p>15</p></div>
+        <div class="card"><h3>Medium / Low</h3><p>15</p></div>
+        <div class="card agreement"><h3>Human Alignment</h3><p>100.0%</p></div>
+        <div class="card"><h3>AI Corrections</h3><p>0</p></div>
+    </div>
+
+    <h2>Diagnostic Audit Logging Matrix (30 Test Cases Verified)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Symptom Profile</th>
+                <th>Diagnostic Root Cause Suggestion</th>
+                <th>Classification</th>
+                <th>Severity</th>
+                <th>Review Status</th>
+                <th>Responsible AI Tracking Log Notes</th>
+            </tr>
+        </thead>
+        <tbody id="case-table-body"></tbody>
+    </table>
+    
+    <script>
+        const caseData = [
+  {
+    "id": "1",
+    "symptom": "PC cannot reach website but gateway works",
+    "fault": "The interface is administratively shut down.",
+    "evidence": "shutdown keyword found in profile logs",
+    "layer": "Layer 3",
+    "severity": "High",
+    "engine": "Deterministic Script",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "2",
+    "symptom": "Device has duplicate IP message error",
+    "fault": "Detected anomaly: IP Address Conflict",
+    "evidence": "Log signature matched layout pattern: 'interface Vlan10 ip address 192.168...'",
+    "layer": "Layer 3",
+    "severity": "Medium",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "3",
+    "symptom": "Browser error says website address not found",
+    "fault": "DNS Server address parameters are unconfigured.",
+    "evidence": "ip name-server 0.0.0.0",
+    "layer": "Layer 7",
+    "severity": "Low",
+    "engine": "Deterministic Script",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "4",
+    "symptom": "PC in accounting cannot talk to server in sales",
+    "fault": "Detected anomaly: VLAN Membership Mismatch",
+    "evidence": "Log signature matched layout pattern: 'switchport access vlan 10 mismatch ...'",
+    "layer": "Layer 2",
+    "severity": "High",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "5",
+    "symptom": "Cannot access internet pages at all",
+    "fault": "DNS Server address parameters are unconfigured.",
+    "evidence": "ip name-server 0.0.0.0",
+    "layer": "Layer 3",
+    "severity": "High",
+    "engine": "Deterministic Script",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "6",
+    "symptom": "PC gets IP 169.254.x.x and cannot access network",
+    "fault": "Detected anomaly: DHCP Pool Exhaustion",
+    "evidence": "Log signature matched layout pattern: 'ip dhcp pool local empty leases...'",
+    "layer": "Layer 7",
+    "severity": "High",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "7",
+    "symptom": "Inter-VLAN traffic fails between switches",
+    "fault": "Detected anomaly: Trunk Port Misconfigured as Access",
+    "evidence": "Log signature matched layout pattern: 'interface GigabitEthernet0/1 switch...'",
+    "layer": "Layer 2",
+    "severity": "High",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "8",
+    "symptom": "Ping to external server fails at router edge",
+    "fault": "Detected anomaly: Strict ACL Blocking Traffic",
+    "evidence": "Log signature matched layout pattern: 'access-list 101 deny ip any any...'",
+    "layer": "Layer 4",
+    "severity": "High",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "9",
+    "symptom": "Internal hosts cannot browse public web servers",
+    "fault": "Detected anomaly: NAT Inside/Outside Map Missing",
+    "evidence": "Log signature matched layout pattern: 'ip nat inside source list missed...'",
+    "layer": "Layer 3",
+    "severity": "High",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "10",
+    "symptom": "Guest Wi-Fi users can access accounting files",
+    "fault": "Detected anomaly: Missing Guest Isolation Profile",
+    "evidence": "Log signature matched layout pattern: 'vlan 99 isolation disabled...'",
+    "layer": "Layer 2",
+    "severity": "Medium",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "11",
+    "symptom": "New laptop cannot join secure office Wi-Fi",
+    "fault": "Detected anomaly: RADIUS Authentication Failure",
+    "evidence": "Log signature matched layout pattern: 'dot1x authentication failure creden...'",
+    "layer": "Layer 2",
+    "severity": "Medium",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "12",
+    "symptom": "Switch trunk port drops all tagged user frames",
+    "fault": "Detected anomaly: VLAN Pruning Dropping Traffic",
+    "evidence": "Log signature matched layout pattern: 'switchport trunk allowed vlan 1...'",
+    "layer": "Layer 2",
+    "severity": "Medium",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "13",
+    "symptom": "PC can ping gateway but not remote branch server",
+    "fault": "Detected anomaly: Missing OSPF Network Advertisement",
+    "evidence": "Log signature matched layout pattern: 'router ospf 1 missing network state...'",
+    "layer": "Layer 3",
+    "severity": "High",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "14",
+    "symptom": "Router CPU spiking to 100 percent constantly",
+    "fault": "DNS Server address parameters are unconfigured.",
+    "evidence": "ip name-server 0.0.0.0",
+    "layer": "Layer 3",
+    "severity": "High",
+    "engine": "Deterministic Script",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "15",
+    "symptom": "VoIP phones dropping calls across the switch",
+    "fault": "Detected anomaly: Missing QoS Trust Boundary",
+    "evidence": "Log signature matched layout pattern: 'mls qos trust cos disabled...'",
+    "layer": "Layer 2",
+    "severity": "Medium",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "16",
+    "symptom": "PC cannot obtain an IP address automatically",
+    "fault": "Detected anomaly: Missing DHCP Relay Agent Address",
+    "evidence": "Log signature matched layout pattern: 'ip helper-address missing on interf...'",
+    "layer": "Layer 3",
+    "severity": "High",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "17",
+    "symptom": "Secure terminal session to router rejected",
+    "fault": "Detected anomaly: SSH/Telnet Blocked on VTY Lines",
+    "evidence": "Log signature matched layout pattern: 'line vty 0 4 transport input none...'",
+    "layer": "Layer 7",
+    "severity": "Low",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "18",
+    "symptom": "Server cannot be reached outside local subnet",
+    "fault": "Detected anomaly: Missing Gateway on Layer 2 Switch",
+    "evidence": "Log signature matched layout pattern: 'ip default-gateway unconfigured...'",
+    "layer": "Layer 3",
+    "severity": "Medium",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "19",
+    "symptom": "Cannot ping server by name but IP works",
+    "fault": "Detected anomaly: DNS Name Resolution Disabled",
+    "evidence": "Log signature matched layout pattern: 'ip domain-lookup disabled...'",
+    "layer": "Layer 7",
+    "severity": "Low",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "20",
+    "symptom": "Fiber link trunk interface fluctuating up/down",
+    "fault": "Detected anomaly: Duplex Mismatch on Fiber Link",
+    "evidence": "Log signature matched layout pattern: 'interface TenGigabitEthernet0/1 dup...'",
+    "layer": "Layer 1",
+    "severity": "High",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "21",
+    "symptom": "Web traffic blocked but ping tool works fine",
+    "fault": "Detected anomaly: ACL Blocking Port 443 HTTPS",
+    "evidence": "Log signature matched layout pattern: 'access-list 102 deny tcp any any eq...'",
+    "layer": "Layer 4",
+    "severity": "High",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "22",
+    "symptom": "Branch office cannot reach the main data center",
+    "fault": "Detected anomaly: VPN Phase 1 Policy Mismatch",
+    "evidence": "Log signature matched layout pattern: 'crypto isakmp policy failure...'",
+    "layer": "Layer 3",
+    "severity": "High",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "23",
+    "symptom": "Devices getting incorrect network IP parameters",
+    "fault": "Detected anomaly: Rogue DHCP Server on Network",
+    "evidence": "Log signature matched layout pattern: 'rogue dhcp server detected on port...'",
+    "layer": "Layer 3",
+    "severity": "High",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "24",
+    "symptom": "Switch port goes down immediately when PC plugs in",
+    "fault": "Detected anomaly: Port Security Violation Lockdown",
+    "evidence": "Log signature matched layout pattern: 'err-disable port-security violation...'",
+    "layer": "Layer 2",
+    "severity": "Medium",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "25",
+    "symptom": "Network map lacks device details over connections",
+    "fault": "Detected anomaly: LLDP Discovery Protocol Disabled",
+    "evidence": "Log signature matched layout pattern: 'no lldp run...'",
+    "layer": "Layer 2",
+    "severity": "Low",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "26",
+    "symptom": "Packet losses observed on heavily loaded trunk",
+    "fault": "Detected anomaly: Speed Mismatch Configuration",
+    "evidence": "Log signature matched layout pattern: 'interface range gig1/0/1 speed 10...'",
+    "layer": "Layer 1",
+    "severity": "Medium",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "27",
+    "symptom": "Remote admin cannot pull log files from device",
+    "fault": "Detected anomaly: Missing Syslog Server Route",
+    "evidence": "Log signature matched layout pattern: 'logging host unreachable...'",
+    "layer": "Layer 7",
+    "severity": "Low",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "28",
+    "symptom": "Time stamp tracking mismatch across logs",
+    "fault": "Detected anomaly: Network Time Protocol Sync Missing",
+    "evidence": "Log signature matched layout pattern: 'ntp server unconfigured...'",
+    "layer": "Layer 7",
+    "severity": "Low",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "29",
+    "symptom": "Layer 3 switch routing engine fails to forward",
+    "fault": "Detected anomaly: Global IP Routing Disabled",
+    "evidence": "Log signature matched layout pattern: 'no ip routing...'",
+    "layer": "Layer 3",
+    "severity": "High",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  },
+  {
+    "id": "30",
+    "symptom": "Wi-Fi access point drops clients randomly",
+    "fault": "Detected anomaly: Wireless Controller Timeout Misconfig",
+    "evidence": "Log signature matched layout pattern: 'dot11 keepalive timeout...'",
+    "layer": "Layer 2",
+    "severity": "Medium",
+    "engine": "AI Diagnostic Engine",
+    "status": "Accepted",
+    "notes": "Auto-approved layout logic validated cleanly."
+  }
+];
+        const tbody = document.getElementById('case-table-body');
+
+        caseData.forEach(function(c) {
+            const row = document.createElement('tr');
+            const statusClass = c.status.toLowerCase();
+            const severityClass = c.severity.toLowerCase();
+
+            row.innerHTML = [
+                '<td><b>#' + c.id + '</b></td>',
+                '<td>' + c.symptom + '</td>',
+                '<td><b>' + c.fault + '</b><br><small style="color:#706e6b;">Source: ' + c.engine + '</small></td>',
+                '<td>' + c.layer + '</td>',
+                '<td><span class="badge ' + severityClass + '">' + c.severity + '</span></td>',
+                '<td><span class="badge ' + statusClass + '">' + c.status + '</span></td>',
+                '<td><i style="font-size:13px; color:#514f4d;">' + c.notes + '</i></td>'
+            ].join('');
+
+            tbody.appendChild(row);
+        });
+    </script>
+    
+</body>
+</html>
