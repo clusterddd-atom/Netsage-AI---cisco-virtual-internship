@@ -1,11 +1,11 @@
-# NetSage AI - Cisco Virtual Internship
+# NetSage AI 
 
-A Flask-based network troubleshooting dashboard for diagnosing Cisco network issues from simulated command output and audit logs.
+A Flask-based network troubleshooting dashboard for diagnosing  network issues from simulated command output and audit logs.
 
 ## Features
 
 - Upload or enter a network symptom and raw log output
-- Run rule-based diagnosis for common Cisco issues
+- Run rule-based diagnosis for common  issues
 - Review AI or deterministic engine output with confidence and next steps
 - Accept, edit, or reject diagnosis results
 - View audit metrics and governance telemetry in a dashboard UI
@@ -13,7 +13,7 @@ A Flask-based network troubleshooting dashboard for diagnosing Cisco network iss
 ## Project structure
 
 - `app.py` - Flask app and diagnosis logic
-- `cases.csv` - sample Cisco troubleshooting cases
+- `cases.csv` - sample  troubleshooting cases
 - `templates/index.html` - dashboard interface
 - `diagnose_prompt.md` - prompt used for AI-style diagnostics
 
@@ -42,4 +42,4 @@ http://localhost:8080/
 
 ## Notes
 
-This project is designed as a Cisco networking troubleshooting assistant and demo dashboard for an AI-assisted operations workflow.
+This project is designed as a  networking troubleshooting assistant and demo dashboard for an AI-assisted operations workflow.
